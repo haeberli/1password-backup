@@ -1,6 +1,5 @@
 FROM 1password/op
 
-COPY ./backup.sh /home/opuser/
-RUN chmod +x ~/backup.sh
+COPY --chmod=755 ./backup.sh /home/opuser/
 
 ENTRYPOINT ~/backup.sh
