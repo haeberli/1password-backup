@@ -32,5 +32,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: 1password-backup
+          tags: haeberli/1password-backup
           labels: latest
