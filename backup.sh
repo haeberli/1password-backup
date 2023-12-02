@@ -2,9 +2,9 @@
 
 echo "1Password Backup"
 
-eval $(op signin --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --password $PASSWORD)
+eval $(op signin my.1password.com $EMAIL $SECRETKEY)
 
-items = $(op list items)
+items = $(op item list)
 
 for item in $items
     content = $(op get item ${item})
