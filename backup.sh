@@ -2,7 +2,7 @@
 
 echo "1Password Backup"
 
-op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin 
+op signin --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --password $PASSWORD
 
 items = $(op list items)
 
