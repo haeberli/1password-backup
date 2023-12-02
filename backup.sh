@@ -7,7 +7,7 @@ eval $((echo $PASSWORD echo -e "\n") | op signin my.1password.com $EMAIL $SECRET
 echo "  done"
 
 echo "- list items"
-items = $(op item list)
+items = $(op list)
 echo "  done"
 
 for item in $items
