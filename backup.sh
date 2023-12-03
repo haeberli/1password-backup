@@ -35,7 +35,7 @@ check () {
 
   for id in $ids
   do
-    echo "Get $i: $id" 
+    echo "Get $count: $id" 
     local item="$(op item get $id --format=json | jq .)"
     ((count++))
 
