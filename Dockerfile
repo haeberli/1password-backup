@@ -7,6 +7,6 @@ RUN apt-get update && apt-get install -y curl unzip jq && \
     unzip op.zip -d /usr/local/bin && \
     rm op.zip
 
-COPY --chmod=755 ./backup.sh /home/opuser/
+COPY --chmod=755 ./backup.sh /home/
 
 ENTRYPOINT ~/backup.sh
