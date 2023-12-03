@@ -10,11 +10,24 @@ echo "- list items"
 items=$(op item list --format=json | jq -r ".[].id")
 echo ". done"
 
+i=1
 for item in $items
 do
-  echo "- get item" 
-  op item get $item --format=json
+  echo "- get $i: $item" 
+  get=$(op item get $item --format=json)
   echo ". done"
+
+  title=$(echo $get | jq -r ".title")
+  vault=$(echo $get | jq -r ".vault.name")
+  content="$(echo $get | jq ".")"
+
+  echo "  Title: $title"
+  echo "  Vault: $vault"
+
+  mkdir -p "$vault"
+  echo "$content" > "$vault/$title-$item.json"
+
+  ((i++))
 done
 
 echo "- sign out"
