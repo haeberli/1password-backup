@@ -3,7 +3,7 @@
 echo "1Password Backup"
 
 echo "- sign in"
-eval $(echo $PASSWORD | op account add --address my.1password.com --email $EMAIL --secret-key $SECRET --signin)
+eval $(echo $PASSWORD | op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin)
 echo ". done"
 
 echo "- list items"
