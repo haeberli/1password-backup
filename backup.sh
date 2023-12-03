@@ -17,15 +17,16 @@ do
   get=$(op item get $item --format=json)
   echo ". done"
 
-  title=$(echo $get | jq -r ".title")
-  vault=$(echo $get | jq -r ".vault.name")
-  content="$(echo $get | jq ".")"
+  title=$(echo $get | jq -r ".title" | sed -e "s/[\\/:\*\?\"<>\|\x01-\x1F\x7F]/_/g")
+  vault=$(echo $get | jq -r ".vault.name" | sed -e "s/[\\/:\*\?\"<>\|\x01-\x1F\x7F]/_/g")
+  content="$(echo $get | jq ".")" 
 
-  echo "  Title: $title"
-  echo "  Vault: $vault"
+  echo "  Title: $title, Vault: $vault"
 
-  mkdir -p "$vault"
-  echo "$content" > "$vault/$title-$item.json"
+  dir="./vaults/$EMAIL/$vault"
+
+  mkdir -p "$dir"
+  echo "$content" > "$dir/$title-$item.json"
 
   ((i++))
 done
