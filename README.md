@@ -4,6 +4,7 @@
 Docker image to periodically clone all entries of all vaults from 1Password to a local server.
 
 ## Setup
+* Get latest container image from [Docker Hub](https://hub.docker.com/repository/docker/haeberli/1password-backup/general)
 * Configure docker container with volume `/vaults`.
 * Add a *.conf file to the folder vaults for each account
 * Add credentials for each account, e.g.
