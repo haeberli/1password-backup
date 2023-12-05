@@ -9,25 +9,24 @@ check () {
   . "$1"
 
   if [ -z "$EMAIL" ]; then
-    echo "EMAIL not specified"
+    echo "EMAIL not specified in $1" 
     return
   fi
 
   if [ -z "$SECRETKEY" ]; then
-    echo "SECRETKEY not specified"
+    echo "SECRETKEY not specified in $1"
     return
   fi
 
   if [ -z "$PASSWORD" ]; then
-    echo "PASSWORD not specified"
+    echo "PASSWORD not specified in $1"
     return
   fi
 
   echo "Check $EMAIL"
 
   eval $(echo $PASSWORD | op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin)
-
-  echo "List items"
+  
   local ids=$(op item list --format=json | jq -r ".[].id")
 
   local count=0
@@ -35,7 +34,6 @@ check () {
 
   for id in $ids
   do
-    echo "Get $count: $id" 
     local item="$(op item get $id --format=json | jq .)"
     ((count++))
 
@@ -43,7 +41,7 @@ check () {
     local vault=$(echo $item| jq -r ".vault.name" | sed -e "s/[\\/:\*\?\"<>\|\x01-\x1F\x7F]/_/g")
 
     if [ -z "$title" ]; then
-      echo "Empty title > skip"
+      echo "Get returned no title for $id"
       continue
     fi
 
@@ -66,9 +64,10 @@ check () {
     ((written++))
   done
 
-  echo "Sign out"
   op signout
 
+  op account forget my
+  
   echo "Check $EMAIL finished: $count items, $written written"
 }
 
