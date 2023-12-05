@@ -4,6 +4,7 @@ check () {
   unset EMAIL
   unset SECRETKEY
   unset PASSWORD
+  unset VAULT
 
   chmod 700 $1
   . "$1"
@@ -23,14 +24,22 @@ check () {
     return
   fi
 
+  if [ ! -z "$VAULT" ]; then
+    VAULTARG="--vault $VAULT"
+  fi 
+  
   echo "Check $EMAIL started"
 
-  eval $(echo $PASSWORD | op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin)
+  eval $(echo "$PASSWORD" | op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin)
   
-  local ids=$(op item list --format=json | jq -r ".[].id")
+  local ids=$(op item list --format=json $VAULTARG | jq -r ".[].id")
+
+  local existing=$(find "./vaults/$EMAIL" -type f)
 
   local count=0
-  local written=0
+  local added=0
+  local updated=0
+  local deleted=0
 
   for id in $ids
   do
@@ -48,29 +57,45 @@ check () {
     local dir="./vaults/$EMAIL/$vault"
     local file="$dir/$title $id.json"
 
-    local itemcmp=$(echo "$item" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
-
-    local exist=""
-    if [ -f "$file" ]; then
-      exist=$(cat "$file" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
-    fi
-
-    if [[ "$itemcmp" == "$exist" ]]; then
-      continue
-    fi
-
-    echo "Write $vault/$title"
     mkdir -p "$dir"
-    echo "$item" > "$file"
 
-    ((written++))
+    existing="${existing/$file}"
+
+    if [ -f "$file" ]; then
+      local itemcmp=$(echo "$item" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
+      local exist=$(cat "$file" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
+
+      if [[ "$itemcmp" == "$exist" ]]; then
+        continue
+      fi
+ 
+      echo "Updated $vault/$title"
+      echo "$item" > "$file"
+      ((updated++))
+    else 
+      echo "Added $vault/$title"
+      echo "$item" > "$file"
+      ((added++))
+    fi
+
   done
+
+  ifs_save="$IFS"
+  IFS="
+"
+  for file in $existing
+  do 
+    echo "Deleted $file"
+    rm "$file"
+    ((deleted++))
+  done
+  IFS=ifs_save
 
   op signout
 
   op account forget my
   
-  echo "Check $EMAIL finished: $count items, $written written"
+  echo "Check $EMAIL finished: $count items, $added added, $updated updated, $deleted deleted"
 }
 
 while true; do
