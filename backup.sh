@@ -80,7 +80,7 @@ check () {
 
   done
 
-  ifs_save="$IFS"
+  OLDIFS="$IFS"
   IFS="
 "
   for file in $existing
@@ -89,7 +89,7 @@ check () {
     rm "$file"
     ((deleted++))
   done
-  IFS=ifs_save
+  IFS=$OLDIFS
 
   op signout
 
