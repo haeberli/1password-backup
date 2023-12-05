@@ -11,7 +11,10 @@ Docker image to periodically clone all entries of all vaults from 1Password to a
         EMAIL=...
         SECRETKEY=A3-...
         PASSWORD=...
+        VAULT=Private
     > This is a regular BASH file - use character escapes or quotes if required, ususly for the password ;-).
+    > 
+    > Remove VAULT to access all vaults or specify vault.
   
 ## Run
 The container will update the vaults every hour.
