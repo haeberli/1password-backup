@@ -23,7 +23,7 @@ check () {
     return
   fi
 
-  echo "Check $EMAIL"
+  echo "Check $EMAIL started"
 
   eval $(echo $PASSWORD | op account add --address my.1password.com --email $EMAIL --secret-key $SECRETKEY --signin)
   
