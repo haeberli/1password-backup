@@ -48,12 +48,14 @@ check () {
     local dir="./vaults/$EMAIL/$vault"
     local file="$dir/$title $id.json"
 
+    local itemcmp=$(echo "$item" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
+
     local exist=""
     if [ -f "$file" ]; then
-      exist=$(cat "$file")
+      exist=$(cat "$file" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
     fi
 
-    if [[ "$item" == "$exist" ]]; then
+    if [[ "$itemcmp" == "$exist" ]]; then
       continue
     fi
 
