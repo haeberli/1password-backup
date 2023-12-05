@@ -1,7 +1,7 @@
 # 1password-backup
 [![Create Docker Image](https://github.com/haeberli/1password-backup/actions/workflows/docker-image.yml/badge.svg)](https://github.com/haeberli/1password-backup/actions/workflows/docker-image.yml)
 
-Docker image to periodically clone all entries of all vaults from 1Password to a local server.
+Docker image to periodically clone entries from 1Password to a local server.
 
 ## Setup
 * Get latest container image from [Docker Hub](https://hub.docker.com/repository/docker/haeberli/1password-backup/general)
