@@ -24,6 +24,7 @@ check () {
     return
   fi
 
+  unset VAULTARG
   if [ ! -z "$VAULT" ]; then
     VAULTARG="--vault $VAULT"
   fi 
