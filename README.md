@@ -12,7 +12,7 @@ Docker image to periodically clone entries from 1Password to a local server.
         SECRETKEY=A3-...
         PASSWORD=...
         VAULT=Private
-    > This is a regular BASH file - use character escapes or quotes if required, usualy for the password ;-).
+    > This is a regular BASH file - use character escapes or quotes if required, usually for the password ;-).
     > 
     > Remove VAULT to access all vaults or specify vault.
   
