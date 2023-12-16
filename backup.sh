@@ -44,7 +44,7 @@ check () {
   for id in $ids
   do
     local item="$(op item get $id --format=json | jq .)"
-    (( count++ ))
+    ((count++))
 
     local title=$(echo $item | jq -r ".title" | sed -e "s/[\\/:\*\?\"<>\|\x01-\x1F\x7F]/_/g")
     local vault=$(echo $item | jq -r ".vault.name" | sed -e "s/[\\/:\*\?\"<>\|\x01-\x1F\x7F]/_/g")
@@ -59,6 +59,8 @@ check () {
 
     mkdir -p "$dir"
 
+    existing="${existing/$file}"
+
     if [ -f "$file" ]; then
       local itemcmp=$(echo "$item" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
       local exist=$(cat "$file" | sed -e 's/"totp":[ ]*"[^"]*"/TOTP/g')
@@ -69,11 +71,11 @@ check () {
  
       echo "Updated $vault/$title"
       echo "$item" > "$file"
-      (( updated++ ))
+      ((updated++))
     else 
       echo "Added $vault/$title"
       echo "$item" > "$file"
-      (( added++ ))
+      ((added++))
     fi
 
   done
@@ -85,7 +87,7 @@ check () {
   do 
     echo "Deleted $file"
     rm "$file"
-    (( deleted++ ))
+    ((deleted++))
   done
   IFS=$OLDIFS
 
